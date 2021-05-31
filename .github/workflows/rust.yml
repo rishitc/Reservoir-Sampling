@@ -15,12 +15,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Adding cross-compiling target Linux-musl
-        run: rustup target add x86_64-unknown-linux-musl
-      - name: Build
-        run: cargo build --verbose --target=x86_64-unknown-linux-musl
-      - name: Run tests
-        run: cargo test --verbose --target=x86_64-unknown-linux-musl
+      - name: Pull the Docker Image for the Build Environment
+        run: docker pull clux/muslrust
+      - name: Build using the Docker Image
+        run: docker container run -v "${PWD}":/volume --rm -t clux/muslrust cargo build
+      - name: Run tests using the Docker Image
+        run: docker container run -v "${PWD}":/volume --rm -t clux/muslrust cargo test
 
   docker:
     needs: build
@@ -28,10 +28,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Adding cross-compiling target Linux-musl
-        run: rustup target add x86_64-unknown-linux-musl
-      - name: Build
-        run: cargo build --verbose --release --target=x86_64-unknown-linux-musl
+      - name: Pull the Docker Image for the Build Environment
+        run: docker pull clux/muslrust
+      - name: Build using the Docker Image
+        run: docker container run -v "${PWD}":/volume --rm -t clux/muslrust cargo build --release
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx

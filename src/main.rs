@@ -1,3 +1,5 @@
+use websocket::ClientBuilder;
+
 fn main() {
     println!("Hello, world!");
 }
