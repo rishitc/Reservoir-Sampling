@@ -47,6 +47,7 @@ jobs:
         with:
           push: true
           context: .
+          platforms: linux/amd64
           file: "./Dockerfile"
           tags: rishit/reservoir-sampling:latest, rishit/reservoir-sampling:0.0.1
       - name: Image digest
